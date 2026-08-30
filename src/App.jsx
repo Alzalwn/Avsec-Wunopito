@@ -155,9 +155,7 @@ export default function AvsecWunopitoPortal() {
                   </div>
                 </div>
 
-                <button type="submit" disabled={isLoggingIn} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
-                  {isLoggingIn ? 'Memverifikasi...' : 'Login ke Sistem'}
-                </button>
+                <button type="submit" disabled={isLoggingIn} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">{isLoggingIn ? 'Memverifikasi...' : 'Login ke Sistem'}</button>
 
                 <div className="mt-6 text-center text-xs text-slate-500 border-t border-slate-700 pt-4">Gunakan <b className="text-slate-300">admin / admin123</b> atau <b className="text-slate-300">user / user123</b> untuk demo.</div>
               </form>
@@ -170,6 +168,7 @@ export default function AvsecWunopitoPortal() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row font-sans">
+      {/* Mobile Header */}
       <div className="md:hidden bg-slate-900 text-white p-4 flex justify-between items-center z-20">
         <div className="flex items-center gap-2">
           <img src={logo} alt="Logo Aviation Security" className="w-10 h-10 object-contain" />
@@ -177,6 +176,7 @@ export default function AvsecWunopitoPortal() {
         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>{isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}</button>
       </div>
 
+      {/* Sidebar Navigation */}
       <aside className={`
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
         md:translate-x-0 transition-transform duration-300 fixed md:static top-0 left-0 h-full w-64 bg-slate-900 text-white flex flex-col z-30 shadow-xl md:shadow-none
@@ -194,4 +194,3 @@ export default function AvsecWunopitoPortal() {
             </div>
             <div>
               <p className="text-sm font-semibold truncate">{currentUser.nama_lengkap}</p>
-The file continues but we truncated here for brevity.

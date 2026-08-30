@@ -20,27 +20,15 @@ import {
   EyeOff
 } from 'lucide-react';
 
-type Role = 'ADMIN' | 'USER';
+// NOTE: This file previously used TypeScript "type" and "interface" declarations
+// which caused esbuild to fail because the file is plain .jsx. Replaced with
+// runtime-only shapes / comments below.
 
-interface User {
-  id: string;
-  username: string;
-  nama_lengkap: string;
-  role: Role;
-  status_aktif: boolean;
-}
+// Role: 'ADMIN' | 'USER'
+// User: { id, username, nama_lengkap, role, status_aktif }
+// Personnel: { id, nama, id_pas, jabatan, lisensi, status_lisensi, masa_berlaku }
 
-interface Personnel {
-  id: string;
-  nama: string;
-  id_pas: string;
-  jabatan: string;
-  lisensi: 'Basic' | 'Junior' | 'Senior' | 'Management';
-  status_lisensi: 'Aktif' | 'Kedaluwarsa' | 'Mendekati Expired';
-  masa_berlaku: string;
-}
-
-const mockPersonnel: Personnel[] = [
+const mockPersonnel = [
   { id: '1', nama: 'Budi Santoso', id_pas: 'AV-001', jabatan: 'Komandan Regu', lisensi: 'Senior', status_lisensi: 'Aktif', masa_berlaku: '2027-10-12' },
   { id: '2', nama: 'Siti Aminah', id_pas: 'AV-042', jabatan: 'Operator X-Ray', lisensi: 'Junior', status_lisensi: 'Mendekati Expired', masa_berlaku: '2026-09-15' },
   { id: '3', nama: 'Ahmad Dahlan', id_pas: 'AV-088', jabatan: 'Petugas Patroli', lisensi: 'Basic', status_lisensi: 'Kedaluwarsa', masa_berlaku: '2026-01-20' },
@@ -55,7 +43,7 @@ const mockDocs = [
 ];
 
 export default function AvsecWunopitoPortal() {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   
   // Login State
@@ -68,7 +56,7 @@ export default function AvsecWunopitoPortal() {
   // Mobile Menu State
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     setLoginError('');
     setIsLoggingIn(true);
@@ -95,7 +83,7 @@ export default function AvsecWunopitoPortal() {
     setActiveTab('dashboard');
   };
 
-  const navItemClass = (tabName: string) => `
+  const navItemClass = (tabName) => `
     flex items-center w-full text-left px-4 py-3 rounded-lg transition-all duration-200
     ${activeTab === tabName 
       ? 'bg-blue-600 text-white shadow-md' 
@@ -199,7 +187,7 @@ export default function AvsecWunopitoPortal() {
 
                 <div className="flex items-center justify-between mt-2">
                   <div className="text-sm">
-                    <a href="#" onClick={(e) => { e.preventDefault(); alert('Silakan hubungi Admin (Ext. 112) untuk mereset password Anda.'); }} className="font-medium text-blue-400 hover:text-blue-300">
+                    <a href="#" onClick={(e) => { e.preventDefault(); alert('Silakan hubungi Admin (Ext. 112) untuk mereset password Anda.'); }} className="font-medium text-blue-400 hover:text-blue-300"> 
                       Lupa password?
                     </a>
                   </div>
@@ -208,7 +196,7 @@ export default function AvsecWunopitoPortal() {
                 <button 
                   type="submit" 
                   disabled={isLoggingIn}
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
                 >
                   {isLoggingIn ? 'Memverifikasi...' : 'Login ke Sistem'}
                 </button>
@@ -255,7 +243,7 @@ export default function AvsecWunopitoPortal() {
             </div>
             <div>
               <p className="text-sm font-semibold truncate">{currentUser.nama_lengkap}</p>
-              <span className={`inline-block mt-1 px-2 py-0.5 text-[10px] font-bold rounded uppercase ${currentUser.role === 'ADMIN' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'}`}>
+              <span className={`inline-block mt-1 px-2 py-0.5 text-[10px] font-bold rounded uppercase ${currentUser.role === 'ADMIN' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-slate-800/20 text-slate-300 border border-slate-700/30'}`}>
                 {currentUser.role}
               </span>
             </div>
@@ -289,7 +277,7 @@ export default function AvsecWunopitoPortal() {
         </nav>
 
         <div className="p-4 border-t border-slate-800">
-          <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 bg-slate-800 hover:bg-red-500/10 hover:text-red-400 text-slate-300 font-medium py-2.5 px-4 rounded-lg transition-colors">
+          <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 bg-slate-800 hover:bg-red-500/10 hover:text-red-400 text-slate-300 font-medium py-2.5 px-4 rounded-lg">
             <LogOut className="w-4 h-4" /> Logout
           </button>
         </div>
@@ -480,7 +468,7 @@ export default function AvsecWunopitoPortal() {
                         </div>
                       </div>
                     </div>
-                    <button className="w-full md:w-auto flex items-center justify-center gap-2 text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg font-medium text-sm transition-colors">
+                    <button className="w-full md:w-auto flex items-center justify-center gap-2 text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg font-medium">
                       <Download className="w-4 h-4" /> Unduh
                     </button>
                   </li>

@@ -20,6 +20,8 @@ import {
   EyeOff
 } from 'lucide-react';
 
+import logo from '../WhatsApp Image 2026-01-26 at 10.11.20 AM.jpeg';
+
 // NOTE: This file previously used TypeScript "type" and "interface" declarations
 // which caused esbuild to fail because the file is plain .jsx. Replaced with
 // runtime-only shapes / comments below.
@@ -105,7 +107,7 @@ export default function AvsecWunopitoPortal() {
           <div className="md:w-5/12 bg-gradient-to-b from-blue-900 to-slate-900 p-10 flex flex-col justify-between text-white border-r border-slate-700">
             <div>
               <div className="flex items-center gap-3 mb-8">
-                <img src="image_5cafac.jpg" alt="Logo Aviation Security Wunopito Airport" className="w-24 h-24 md:w-32 md:h-32 object-contain" />
+                <img src={logo} alt="Logo Aviation Security Wunopito Airport" className="w-24 h-24 md:w-32 md:h-32 object-contain" />
               </div>
               <h2 className="text-3xl font-bold mb-4 leading-tight">Portal Operasional Keamanan</h2>
               <p className="text-slate-300 text-sm leading-relaxed mb-8">
@@ -167,7 +169,7 @@ export default function AvsecWunopitoPortal() {
                       type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="block w-full pl-10 pr-10 py-3 border border-slate-600 rounded-lg bg-slate-900 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="block w-full pl-10 pr-10 py-3 border border-slate-600 rounded-lg bg-slate-900 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500[...]
                       placeholder="••••••••"
                       required
                     />
@@ -218,7 +220,7 @@ export default function AvsecWunopitoPortal() {
       {/* Mobile Header */}
       <div className="md:hidden bg-slate-900 text-white p-4 flex justify-between items-center z-20">
         <div className="flex items-center gap-2">
-          <img src="image_5cafac.jpg" alt="Logo Aviation Security" className="w-10 h-10 object-contain" />
+          <img src={logo} alt="Logo Aviation Security" className="w-10 h-10 object-contain" />
         </div>
         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -232,7 +234,7 @@ export default function AvsecWunopitoPortal() {
       `}>
         <div className="p-6 border-b border-slate-800 hidden md:block">
           <div className="flex items-center gap-3">
-            <img src="image_5cafac.jpg" alt="Logo Aviation Security" className="w-16 h-16 object-contain" />
+            <img src={logo} alt="Logo Aviation Security" className="w-16 h-16 object-contain" />
           </div>
         </div>
         
@@ -341,284 +343,16 @@ export default function AvsecWunopitoPortal() {
                   Pintasan <span className="text-slate-400 font-normal text-sm">(Quick Links)</span>
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <button onClick={() => setActiveTab('reports')} className="p-4 bg-slate-50 hover:bg-blue-50 hover:border-blue-200 border border-slate-100 rounded-xl text-center transition-all group">
+                  <button onClick={() => setActiveTab('reports')} className="p-4 bg-slate-50 hover:bg-blue-50 hover:border-blue-200 border border-slate-100 rounded-xl text-center transition-all g[...]
                     <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm text-blue-600 group-hover:scale-110 transition-transform">
                       <Clock className="w-5 h-5" />
                     </div>
                     <span className="block mt-3 text-sm font-semibold text-slate-700">Log Patroli</span>
                   </button>
-                  <button onClick={() => setActiveTab('reports')} className="p-4 bg-slate-50 hover:bg-red-50 hover:border-red-200 border border-slate-100 rounded-xl text-center transition-all group">
+                  <button onClick={() => setActiveTab('reports')} className="p-4 bg-slate-50 hover:bg-red-50 hover:border-red-200 border border-slate-100 rounded-xl text-center transition-all gro[...]
                     <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm text-red-600 group-hover:scale-110 transition-transform">
                       <AlertTriangle className="w-5 h-5" />
                     </div>
                     <span className="block mt-3 text-sm font-semibold text-slate-700">Lapor Insiden</span>
                   </button>
-                  <button onClick={() => setActiveTab('documents')} className="p-4 bg-slate-50 hover:bg-yellow-50 hover:border-yellow-200 border border-slate-100 rounded-xl text-center transition-all group">
-                    <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm text-yellow-600 group-hover:scale-110 transition-transform">
-                      <BookOpen className="w-5 h-5" />
-                    </div>
-                    <span className="block mt-3 text-sm font-semibold text-slate-700">Cari SOP</span>
-                  </button>
-                  <button onClick={() => setActiveTab('personnel')} className="p-4 bg-slate-50 hover:bg-green-50 hover:border-green-200 border border-slate-100 rounded-xl text-center transition-all group">
-                    <div className="w-10 h-10 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm text-green-600 group-hover:scale-110 transition-transform">
-                      <Users className="w-5 h-5" />
-                    </div>
-                    <span className="block mt-3 text-sm font-semibold text-slate-700">Cek Lisensi</span>
-                  </button>
-                </div>
-              </div>
 
-              {/* Announcements / Log */}
-              <div className="bg-slate-900 rounded-xl shadow-sm p-6 text-white">
-                <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-yellow-400" /> Instruksi Harian
-                </h2>
-                <div className="space-y-4">
-                  <div className="border-l-2 border-yellow-400 pl-3">
-                    <p className="text-xs text-slate-400 mb-1">Hari ini, 07:00 WITA</p>
-                    <p className="text-sm">Tingkatkan kewaspadaan di area SCP 2 terkait lonjakan penumpang flight pagi.</p>
-                  </div>
-                  <div className="border-l-2 border-blue-400 pl-3">
-                    <p className="text-xs text-slate-400 mb-1">Kemarin, 14:30 WITA</p>
-                    <p className="text-sm">Maintenance mesin X-Ray jalur B selesai. Status beroperasi normal.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'reports' && (
-          <div className="space-y-4 h-[calc(100vh-6rem)] flex flex-col animate-in fade-in duration-500">
-            <header>
-              <h1 className="text-2xl font-bold text-slate-800">Sistem Pelaporan Terpadu</h1>
-              <p className="text-slate-500 text-sm mt-1">Pilih jenis laporan dan isi form di bawah ini secara langsung.</p>
-            </header>
-            
-            <div className="flex flex-col sm:flex-row gap-3">
-              <select className="bg-white border border-slate-300 text-slate-700 py-2.5 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 shadow-sm font-medium">
-                <option>Log Patroli Harian</option>
-                <option>Formulir Pemeriksaan Kendaraan</option>
-                <option>Laporan Penemuan Barang Terlarang</option>
-                <option>Laporan Insiden (Darurat)</option>
-              </select>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-sm whitespace-nowrap">
-                Muat Form
-              </button>
-            </div>
-
-            <div className="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-              <div className="bg-amber-50 p-3 border-b border-amber-100 text-amber-800 text-xs md:text-sm flex justify-between items-center">
-                <span className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4" />
-                  Pastikan koneksi internet stabil saat melakukan submit laporan.
-                </span>
-                <a href="#" className="text-blue-600 hover:underline font-medium ml-2 hidden sm:block">Buka di Tab Baru ↗</a>
-              </div>
-              <iframe 
-                src="https://docs.google.com/forms/d/e/1FAIpQLSe-contoh-ID-form-anda/viewform?embedded=true" 
-                className="w-full h-full bg-slate-50 flex items-center justify-center border-0"
-              >
-                <p className="text-center text-slate-500 mt-20">Area ini akan menampilkan Google Form Pelaporan Anda.</p>
-              </iframe>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'documents' && (
-          <div className="space-y-6 animate-in fade-in duration-500">
-            <header>
-              <h1 className="text-2xl font-bold text-slate-800">Pusat Dokumen & SOP</h1>
-              <p className="text-slate-500 text-sm mt-1">Cari dan unduh regulasi, instruksi kerja, serta SOP terbaru.</p>
-            </header>
-            
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4">
-              <div className="relative flex-1">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-slate-400" />
-                </div>
-                <input 
-                  type="text" 
-                  placeholder="Cari judul dokumen atau kata kunci..." 
-                  className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-                />
-              </div>
-              <select className="px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm bg-white font-medium text-slate-700">
-                <option>Semua Kategori</option>
-                <option>Regulasi Dirjen</option>
-                <option>Prosedur (SOP)</option>
-                <option>Instruksi Kerja</option>
-              </select>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-              <ul className="divide-y divide-slate-100">
-                {mockDocs.map(doc => (
-                  <li key={doc.id} className="p-5 hover:bg-slate-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-colors group">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0 mt-1 md:mt-0">
-                        <FileText className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">{doc.title}</h4>
-                        <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-500 items-center">
-                          <span className="bg-slate-100 px-2.5 py-1 rounded-md font-medium text-slate-600">{doc.kategori}</span>
-                          <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {doc.tanggal}</span>
-                          <span className="text-slate-400">• {doc.ukuran}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <button className="w-full md:w-auto flex items-center justify-center gap-2 text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg font-medium">
-                      <Download className="w-4 h-4" /> Unduh
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'personnel' && (
-          <div className="space-y-6 animate-in fade-in duration-500">
-            <header>
-              <h1 className="text-2xl font-bold text-slate-800">Database Personil</h1>
-              <p className="text-slate-500 text-sm mt-1">Direktori anggota keamanan penerbangan yang bertugas.</p>
-            </header>
-
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-              <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div className="relative w-full sm:w-72">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Search className="h-4 w-4 text-slate-400" />
-                  </div>
-                  <input 
-                    type="text" 
-                    placeholder="Cari nama atau ID Pas..." 
-                    className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                  />
-                </div>
-                <button className="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                  Filter Status
-                </button>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse whitespace-nowrap">
-                  <thead>
-                    <tr className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
-                      <th className="p-4 font-semibold">Nama Lengkap</th>
-                      <th className="p-4 font-semibold">ID Pas</th>
-                      <th className="p-4 font-semibold">Jabatan</th>
-                      <th className="p-4 font-semibold">Lisensi</th>
-                      <th className="p-4 font-semibold">Masa Berlaku</th>
-                      <th className="p-4 font-semibold">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 text-sm">
-                    {mockPersonnel.map(person => (
-                      <tr key={person.id} className="hover:bg-slate-50/80 transition-colors">
-                        <td className="p-4">
-                          <div className="font-medium text-slate-800">{person.nama}</div>
-                        </td>
-                        <td className="p-4">
-                          <span className="font-mono text-slate-500 text-xs">{person.id_pas}</span>
-                        </td>
-                        <td className="p-4 text-slate-600">{person.jabatan}</td>
-                        <td className="p-4">
-                          <span className="bg-slate-100 text-slate-700 py-1 px-2.5 rounded-md text-xs font-semibold border border-slate-200">
-                            {person.lisensi}
-                          </span>
-                        </td>
-                        <td className="p-4 text-slate-600">{person.masa_berlaku}</td>
-                        <td className="p-4">
-                          <span className={`inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-bold 
-                            ${person.status_lisensi === 'Aktif' ? 'bg-green-100 text-green-700 border border-green-200' : 
-                              person.status_lisensi === 'Kedaluwarsa' ? 'bg-red-100 text-red-700 border border-red-200' : 
-                              'bg-yellow-100 text-yellow-700 border border-yellow-200'}`}>
-                            {person.status_lisensi === 'Aktif' && <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>}
-                            {person.status_lisensi === 'Kedaluwarsa' && <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>}
-                            {person.status_lisensi === 'Mendekati Expired' && <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>}
-                            {person.status_lisensi}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'admin' && currentUser.role === 'ADMIN' && (
-          <div className="space-y-6 animate-in fade-in duration-500">
-            <header className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
-              <div className="p-2 bg-red-100 rounded-lg">
-                <Settings className="w-6 h-6 text-red-600" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-800">Administrator Panel</h1>
-                <p className="text-slate-500 text-sm">Area khusus manajemen sistem (Restricted Access).</p>
-              </div>
-            </header>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* User Management */}
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-5">
-                  <Users className="w-24 h-24" />
-                </div>
-                <h2 className="text-lg font-bold text-slate-800 mb-5 relative z-10">Manajemen Pengguna</h2>
-                
-                <div className="space-y-3 relative z-10">
-                  <button className="w-full bg-slate-900 hover:bg-slate-800 text-white py-2.5 px-4 rounded-lg text-sm font-medium transition-colors shadow-sm text-left flex justify-between items-center">
-                    <span>+ Daftarkan Personel Baru</span>
-                    <span className="text-slate-400">→</span>
-                  </button>
-                  <button className="w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2.5 px-4 rounded-lg text-sm font-medium transition-colors text-left flex justify-between items-center">
-                    <span>Reset Password Akun</span>
-                    <span className="text-slate-400">→</span>
-                  </button>
-                  <button className="w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2.5 px-4 rounded-lg text-sm font-medium transition-colors text-left flex justify-between items-center">
-                    <span>Kelola Hak Akses (Role)</span>
-                    <span className="text-slate-400">→</span>
-                  </button>
-                </div>
-
-                <div className="mt-5 p-3 bg-blue-50 border border-blue-100 rounded-lg flex gap-3 relative z-10">
-                  <AlertTriangle className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                  <p className="text-xs text-blue-800 leading-relaxed">
-                    Sistem menggunakan model <b>Registrasi Tertutup</b>. Hanya Administrator yang dapat mendaftarkan akun baru untuk personel operasional.
-                  </p>
-                </div>
-              </div>
-
-              {/* Content Management */}
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-5">
-                  <FileText className="w-24 h-24" />
-                </div>
-                <h2 className="text-lg font-bold text-slate-800 mb-5 relative z-10">Manajemen Konten</h2>
-                
-                <div className="space-y-3 relative z-10">
-                  <button className="w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2.5 px-4 rounded-lg text-sm font-medium transition-colors text-left flex justify-between items-center">
-                    <span>Update Link Google Form (Embed)</span>
-                    <span className="text-slate-400">→</span>
-                  </button>
-                  <button className="w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2.5 px-4 rounded-lg text-sm font-medium transition-colors text-left flex justify-between items-center">
-                    <span>Upload SOP & Regulasi Baru</span>
-                    <span className="text-slate-400">→</span>
-                  </button>
-                  <button className="w-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2.5 px-4 rounded-lg text-sm font-medium transition-colors text-left flex justify-between items-center">
-                    <span>Buat Pengumuman Dashboard</span>
-                    <span className="text-slate-400">→</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-      </main>
-    </div>
-  );
-}

@@ -1,9 +1,8 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import vercel from '@astrojs/vercel/serverless';
-import node from '@astrojs/node';
 
+// https://astro.build/config
 export default defineConfig({
   integrations: [
     react(),
@@ -11,6 +10,5 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
   ],
-  output: 'server',
-  adapter: process.env.VERCEL ? vercel() : node({ mode: 'standalone' }),
+  output: 'static',
 });

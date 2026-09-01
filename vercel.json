@@ -1,13 +1,10 @@
 {
-  "framework": "astro",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/((?!api/|_astro/).*)",
-      "destination": "/"
+      "source": "/((?!_astro/|assets/|favicon.ico).*)",
+      "destination": "/index.html"
     }
   ]
 }

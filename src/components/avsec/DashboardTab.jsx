@@ -110,7 +110,7 @@ export default function DashboardTab({
             <Radio className="w-5 h-5 text-blue-600" />
             Pintasan Operasional Cepat
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
             <button
               onClick={() => { changeTabWithLoading('logbook'); setLogbookMainTab('form'); setSelectedFormKey('access_control'); setIsIframeLoading(true); }}
               className="p-4 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-2xl text-center transition-all group cursor-pointer"
@@ -139,16 +139,6 @@ export default function DashboardTab({
                 <Search className="w-5 h-5" />
               </div>
               <span className="block mt-3 text-xs font-bold text-slate-800">Logbook Penyisiran</span>
-            </button>
-
-            <button
-              onClick={() => changeTabWithLoading('dokumen')}
-              className="p-4 bg-slate-50 hover:bg-amber-50 hover:border-amber-300 border border-slate-200 rounded-2xl text-center transition-all group cursor-pointer"
-            >
-              <div className="w-11 h-11 mx-auto bg-white rounded-xl flex items-center justify-center shadow-xs text-amber-600 group-hover:scale-105 transition-transform">
-                <BookOpen className="w-5 h-5" />
-              </div>
-              <span className="block mt-3 text-xs font-bold text-slate-800">Pusat SOP & Regulasi</span>
             </button>
           </div>
 

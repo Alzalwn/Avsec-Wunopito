@@ -144,12 +144,21 @@ export default function AvsecPortal() {
     setTimeout(() => setNotification(''), 4000);
   };
 
-  // Initial Fetch from Database API
+  // Initial Fetch from Database API & Session Rehydration
   useEffect(() => {
     const savedUser = localStorage.getItem('avsec_remembered_username');
     if (savedUser) {
       setUsername(savedUser);
       setRememberMe(true);
+    }
+
+    const sessionUser = localStorage.getItem('avsec_current_user');
+    if (sessionUser) {
+      try {
+        setCurrentUser(JSON.parse(sessionUser));
+      } catch (e) {
+        localStorage.removeItem('avsec_current_user');
+      }
     }
 
     apiService.fetchPortalData()
@@ -196,6 +205,7 @@ export default function AvsecPortal() {
           localStorage.removeItem('avsec_remembered_username');
         }
 
+        localStorage.setItem('avsec_current_user', JSON.stringify(matchedUser));
         setCurrentUser(matchedUser);
         setIsLoginModalOpen(false);
 
@@ -211,6 +221,7 @@ export default function AvsecPortal() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('avsec_current_user');
     setCurrentUser(null);
     setPassword('');
     setActiveTab('dashboard');

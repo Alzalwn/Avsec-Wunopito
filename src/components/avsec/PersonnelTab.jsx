@@ -110,10 +110,10 @@ export default function PersonnelTab({
                         </button>
                       )}
                       <button
-                        onClick={() => showNotification(`Detail Personel: ${p.nama} (Kontak: ${p.kontak})`)}
+                        onClick={() => openEditPersonnelModal(p)}
                         className="text-blue-600 hover:text-blue-800 font-bold hover:underline cursor-pointer ml-1"
                       >
-                        Detail
+                        Detail & Edit
                       </button>
                     </div>
                   </td>

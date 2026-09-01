@@ -13,12 +13,12 @@ export default function PersonnelModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200">
+    <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
           <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <Users className="w-5 h-5 text-blue-600" />
-            {editingPersonnel ? 'Edit Data Personel' : 'Tambah Personel & Pembuatan Kredensial'}
+            {editingPersonnel ? 'Detail & Edit Data Personel' : 'Tambah Personel & Pembuatan Kredensial'}
           </h3>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 cursor-pointer">
             <X className="w-5 h-5" />
@@ -33,7 +33,7 @@ export default function PersonnelModal({
               value={personnelForm.nama}
               onChange={(e) => setPersonnelForm({ ...personnelForm, nama: e.target.value })}
               placeholder="Contoh: Antonius Fernandez"
-              className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium"
               required
             />
           </div>
@@ -64,6 +64,30 @@ export default function PersonnelModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
+              <label className="block font-bold text-slate-700 mb-1">Kontak / No. Telepon</label>
+              <input
+                type="text"
+                value={personnelForm.kontak || ''}
+                onChange={(e) => setPersonnelForm({ ...personnelForm, kontak: e.target.value })}
+                placeholder="Contoh: 0812-3456-7890"
+                className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium"
+              />
+            </div>
+            <div>
+              <label className="block font-bold text-slate-700 mb-1">Role Akses System</label>
+              <select
+                value={personnelForm.role}
+                onChange={(e) => setPersonnelForm({ ...personnelForm, role: e.target.value })}
+                className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium"
+              >
+                <option value="USER">Petugas Operasional (User)</option>
+                <option value="ADMIN">Administrator (Admin)</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
               <label className="block font-bold text-slate-700 mb-1">Kualifikasi Lisensi (SKP)</label>
               <select
                 value={personnelForm.lisensi}
@@ -77,16 +101,28 @@ export default function PersonnelModal({
               </select>
             </div>
             <div>
-              <label className="block font-bold text-slate-700 mb-1">Role Akses System</label>
+              <label className="block font-bold text-slate-700 mb-1">Status Lisensi</label>
               <select
-                value={personnelForm.role}
-                onChange={(e) => setPersonnelForm({ ...personnelForm, role: e.target.value })}
+                value={personnelForm.status_lisensi}
+                onChange={(e) => setPersonnelForm({ ...personnelForm, status_lisensi: e.target.value })}
                 className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium"
               >
-                <option value="USER">Petugas Operasional (User)</option>
-                <option value="ADMIN">Administrator (Admin)</option>
+                <option>Aktif</option>
+                <option>Mendekati Expired</option>
+                <option>Kedaluwarsa</option>
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="block font-bold text-slate-700 mb-1">Masa Berlaku Lisensi</label>
+            <input
+              type="date"
+              value={personnelForm.masa_berlaku}
+              onChange={(e) => setPersonnelForm({ ...personnelForm, masa_berlaku: e.target.value })}
+              className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium"
+              required
+            />
           </div>
 
           <div>
@@ -109,44 +145,19 @@ export default function PersonnelModal({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block font-bold text-slate-700 mb-1">Status Lisensi</label>
-              <select
-                value={personnelForm.status_lisensi}
-                onChange={(e) => setPersonnelForm({ ...personnelForm, status_lisensi: e.target.value })}
-                className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium"
-              >
-                <option>Aktif</option>
-                <option>Mendekati Expired</option>
-                <option>Kedaluwarsa</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-bold text-slate-700 mb-1">Masa Berlaku Lisensi</label>
-              <input
-                type="date"
-                value={personnelForm.masa_berlaku}
-                onChange={(e) => setPersonnelForm({ ...personnelForm, masa_berlaku: e.target.value })}
-                className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+          <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl cursor-pointer"
+              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl cursor-pointer transition-colors"
             >
               Batal
             </button>
             <button
               type="submit"
-              className="flex items-center gap-1.5 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md cursor-pointer"
+              className="flex items-center gap-1.5 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md cursor-pointer transition-all"
             >
-              <Save className="w-4 h-4" /> Simpan Personel & Akun
+              <Save className="w-4 h-4" /> Simpan Perubahan
             </button>
           </div>
         </form>

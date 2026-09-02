@@ -1,4 +1,6 @@
+'use client';
 import React, { useState, useEffect } from 'react';
+
 import Navbar from './avsec/Navbar.jsx';
 import Sidebar from './avsec/Sidebar.jsx';
 import NotificationToast from './avsec/NotificationToast.jsx';

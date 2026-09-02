@@ -1,3 +1,4 @@
+﻿'use client';
 import React from 'react';
 import { Radio, Menu, X, UserCircle, LogOut, Lock } from 'lucide-react';
 import logo from '../../assets/logo.jpeg';

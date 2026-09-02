@@ -1,3 +1,4 @@
+﻿'use client';
 import React from 'react';
 import { Users, X, RefreshCw, Save } from 'lucide-react';
 

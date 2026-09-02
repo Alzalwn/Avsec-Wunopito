@@ -1,3 +1,4 @@
+﻿'use client';
 import React from 'react';
 import { Megaphone, Phone, Plus, Edit3, Trash2 } from 'lucide-react';
 

@@ -1,0 +1,61 @@
+﻿import { createClient } from '@supabase/supabase-js'
+import { NextResponse } from 'next/server'
+
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  )
+}
+
+export async function GET() {
+  const supabase = getSupabase()
+  const { data, error } = await supabase.from('personnel').select('*').order('created_at', { ascending: true })
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json({ personnel: data })
+}
+
+export async function POST(request) {
+  try {
+    const supabase = getSupabase()
+    const item = await request.json()
+
+    let result
+    if (item.id) {
+      // Update existing
+      const { data, error } = await supabase
+        .from('personnel')
+        .upsert({ ...item })
+        .select()
+      if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+      result = data
+    } else {
+      // Insert new
+      const { data, error } = await supabase
+        .from('personnel')
+        .insert({ ...item })
+        .select()
+      if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+      result = data
+    }
+
+    // Return full updated list
+    const { data: all } = await supabase.from('personnel').select('*').order('created_at', { ascending: true })
+    return NextResponse.json({ success: true, personnel: all })
+  } catch (err) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
+}
+
+export async function DELETE(request) {
+  try {
+    const supabase = getSupabase()
+    const { id } = await request.json()
+    const { error } = await supabase.from('personnel').delete().eq('id', id)
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    const { data: all } = await supabase.from('personnel').select('*').order('created_at', { ascending: true })
+    return NextResponse.json({ success: true, personnel: all })
+  } catch (err) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
+}

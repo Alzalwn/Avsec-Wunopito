@@ -1,3 +1,4 @@
+﻿'use client';
 import React from 'react';
 import { Lock, UserCircle, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import logo from '../../assets/logo.jpeg';

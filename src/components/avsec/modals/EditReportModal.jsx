@@ -1,3 +1,4 @@
+﻿'use client';
 import React from 'react';
 import { Edit3, X, Save } from 'lucide-react';
 

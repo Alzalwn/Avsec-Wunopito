@@ -1,3 +1,4 @@
+﻿'use client';
 import React from 'react';
 import { LayoutDashboard, FileText, BookOpen, Megaphone, Users, Settings, Lock, LogOut } from 'lucide-react';
 

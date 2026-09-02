@@ -1,3 +1,4 @@
+﻿'use client';
 import React from 'react';
 import { Plus, Search, Edit3 } from 'lucide-react';
 

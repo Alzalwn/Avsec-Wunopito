@@ -1,3 +1,4 @@
+﻿'use client';
 import React from 'react';
 import { Lock, AlertCircle, Trash2 } from 'lucide-react';
 

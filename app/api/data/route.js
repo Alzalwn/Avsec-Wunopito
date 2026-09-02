@@ -1,5 +1,8 @@
-﻿import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
+
+// Pastikan setiap request selalu ambil data terbaru dari Supabase (tidak di-cache)
+export const dynamic = 'force-dynamic'
 
 function getSupabase() {
   return createClient(

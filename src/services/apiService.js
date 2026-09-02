@@ -42,27 +42,25 @@ function setLocal(key, data) {
 }
 
 export async function fetchPortalData() {
-  // If localStorage already has saved edits/deletions, prioritize local storage
-  const hasLocalData = hasLocal(STORAGE_KEYS.personnel) || hasLocal(STORAGE_KEYS.docs);
-
-  if (!hasLocalData) {
-    try {
-      const res = await fetch('/api/data');
-      if (res.ok) {
-        const data = await res.json();
-        if (data.personnel) setLocal(STORAGE_KEYS.personnel, data.personnel);
-        if (data.docs) setLocal(STORAGE_KEYS.docs, data.docs);
-        if (data.announcements) setLocal(STORAGE_KEYS.announcements, data.announcements);
-        if (data.reports) setLocal(STORAGE_KEYS.reports, data.reports);
-        if (data.emergencyContacts) setLocal(STORAGE_KEYS.contacts, data.emergencyContacts);
-        if (data.logbookCategories) setLocal(STORAGE_KEYS.logbooks, data.logbookCategories);
-        return data;
-      }
-    } catch (err) {
-      console.warn('API unavailable, switching to local storage fallback mode.');
+  // Selalu ambil dari API Supabase terlebih dahulu (data real-time)
+  try {
+    const res = await fetch('/api/data');
+    if (res.ok) {
+      const data = await res.json();
+      // Simpan ke localStorage sebagai cache offline
+      if (data.personnel) setLocal(STORAGE_KEYS.personnel, data.personnel);
+      if (data.docs) setLocal(STORAGE_KEYS.docs, data.docs);
+      if (data.announcements) setLocal(STORAGE_KEYS.announcements, data.announcements);
+      if (data.reports) setLocal(STORAGE_KEYS.reports, data.reports);
+      if (data.emergencyContacts) setLocal(STORAGE_KEYS.contacts, data.emergencyContacts);
+      if (data.logbookCategories) setLocal(STORAGE_KEYS.logbooks, data.logbookCategories);
+      return data;
     }
+  } catch (err) {
+    console.warn('API Supabase tidak tersedia, menggunakan cache lokal sebagai fallback.');
   }
 
+  // Fallback: gunakan localStorage cache jika API tidak tersedia (offline)
   return {
     personnel: getLocal(STORAGE_KEYS.personnel, initialPersonnel),
     docs: getLocal(STORAGE_KEYS.docs, initialDocs),

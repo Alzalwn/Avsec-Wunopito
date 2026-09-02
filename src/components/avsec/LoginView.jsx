@@ -1,7 +1,6 @@
-﻿'use client';
+'use client';
 import React from 'react';
 import { Lock, UserCircle, Eye, EyeOff, AlertCircle } from 'lucide-react';
-import logo from '../../assets/logo.jpeg';
 
 export default function LoginView({
   username,
@@ -16,8 +15,6 @@ export default function LoginView({
   isLoggingIn,
   handleLogin
 }) {
-  const logoSrc = logo.src || logo;
-
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center p-4 relative overflow-hidden font-sans">
       {/* Background Glow Overlay */}
@@ -29,7 +26,7 @@ export default function LoginView({
           <div className="inline-flex relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-blue-600 to-indigo-600 rounded-full blur-xs opacity-75 group-hover:opacity-100 transition duration-300"></div>
             <img
-              src={logoSrc}
+              src="/logo.jpeg"
               alt="AVSEC Wunopito Logo"
               className="relative w-24 h-24 rounded-full object-cover border-2 border-amber-400 shadow-2xl mx-auto transform transition duration-300 group-hover:scale-105"
             />

@@ -189,15 +189,23 @@ export default function AvsecPortal() {
 
     setTimeout(() => {
       let matchedUser = null;
-      if (username.toLowerCase() === 'admin' && password === 'admin123') {
-        matchedUser = { id: 'u1', username: 'admin', nama_lengkap: 'Admin Wunopito', role: 'ADMIN', is_first_login: false };
-      } else if (username.toLowerCase() === 'user' && password === 'user123') {
-        matchedUser = { id: 'u2', username: 'user', nama_lengkap: 'Petugas AVSEC Wunopito', role: 'USER', is_first_login: false };
-      } else {
-        const person = personnelList.find(p => p.username.toLowerCase() === username.toLowerCase() || p.id_pas.toLowerCase() === username.toLowerCase());
-        if (person) {
-          matchedUser = { id: person.id, username: person.username, nama_lengkap: person.nama, role: person.role || 'USER', is_first_login: person.is_first_login ?? true };
-        }
+
+      // Cari personel berdasarkan username atau ID Pas, lalu verifikasi password
+      const person = personnelList.find(
+        p =>
+          (p.username?.toLowerCase() === username.toLowerCase() ||
+           p.id_pas?.toLowerCase() === username.toLowerCase()) &&
+          p.password_default === password
+      );
+
+      if (person) {
+        matchedUser = {
+          id: person.id,
+          username: person.username,
+          nama_lengkap: person.nama,
+          role: person.role || 'USER',
+          is_first_login: person.is_first_login ?? true
+        };
       }
 
       if (matchedUser) {
@@ -216,7 +224,7 @@ export default function AvsecPortal() {
         }
         changeTabWithLoading('dashboard');
       } else {
-        setLoginError('Kredensial tidak valid. Silakan gunakan ID Pas / Username dan Password Anda.');
+        setLoginError('Kredensial tidak valid. Periksa kembali ID Pas / Username dan Password Anda.');
       }
       setIsLoggingIn(false);
     }, 450);
@@ -615,8 +623,8 @@ export default function AvsecPortal() {
       return;
     }
 
-    if (adminPasswordInput !== 'admin123' && adminPasswordInput !== password && adminPasswordInput !== 'wunopito123') {
-      setAdminPasswordError('Password Admin tidak cocok! Penghapusan dibatalkan.');
+    if (adminPasswordInput !== password) {
+      setAdminPasswordError('Password tidak cocok! Penghapusan dibatalkan.');
       return;
     }
 

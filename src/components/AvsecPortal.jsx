@@ -182,16 +182,29 @@ export default function AvsecPortal() {
   };
 
   // Auth Handlers
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
     setIsLoggingIn(true);
 
-    setTimeout(() => {
-      let matchedUser = null;
+    try {
+      // Selalu ambil data personel terbaru dari Supabase saat verifikasi login
+      let currentPersonnel = personnelList;
+      try {
+        const res = await fetch('/api/personnel', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.personnel && Array.isArray(data.personnel)) {
+            currentPersonnel = data.personnel;
+            setPersonnelList(data.personnel);
+          }
+        }
+      } catch (fetchErr) {
+        console.warn('Gagal fetch live personnel, menggunakan state lokal:', fetchErr);
+      }
 
       // Cari personel berdasarkan username atau ID Pas, lalu verifikasi password
-      const person = personnelList.find(
+      const person = currentPersonnel.find(
         p =>
           (p.username?.toLowerCase() === username.toLowerCase() ||
            p.id_pas?.toLowerCase() === username.toLowerCase()) &&
@@ -199,16 +212,14 @@ export default function AvsecPortal() {
       );
 
       if (person) {
-        matchedUser = {
+        const matchedUser = {
           id: person.id,
           username: person.username,
           nama_lengkap: person.nama,
           role: person.role || 'USER',
           is_first_login: person.is_first_login ?? true
         };
-      }
 
-      if (matchedUser) {
         if (rememberMe) {
           localStorage.setItem('avsec_remembered_username', username);
         } else {
@@ -219,6 +230,16 @@ export default function AvsecPortal() {
         setCurrentUser(matchedUser);
         setIsLoginModalOpen(false);
 
+        // Refresh portal data saat login berhasil
+        apiService.fetchPortalData().then(data => {
+          if (data.personnel) setPersonnelList(data.personnel);
+          if (data.docs) setDocList(data.docs);
+          if (data.announcements) setAnnouncements(data.announcements);
+          if (data.reports) setReportList(data.reports);
+          if (data.emergencyContacts) setEmergencyContacts(data.emergencyContacts);
+          if (data.logbookCategories) setLogbookCategories(data.logbookCategories);
+        });
+
         if (matchedUser.is_first_login) {
           setIsFirstLoginModalOpen(true);
         }
@@ -226,8 +247,11 @@ export default function AvsecPortal() {
       } else {
         setLoginError('Kredensial tidak valid. Periksa kembali ID Pas / Username dan Password Anda.');
       }
+    } catch (err) {
+      setLoginError('Terjadi kesalahan saat memverifikasi login.');
+    } finally {
       setIsLoggingIn(false);
-    }, 450);
+    }
   };
 
   const handleLogout = () => {
@@ -235,6 +259,16 @@ export default function AvsecPortal() {
     setCurrentUser(null);
     setPassword('');
     setActiveTab('dashboard');
+
+    // Refresh data dari database agar data login berikutnya selalu sinkron
+    apiService.fetchPortalData().then(data => {
+      if (data.personnel) setPersonnelList(data.personnel);
+      if (data.docs) setDocList(data.docs);
+      if (data.announcements) setAnnouncements(data.announcements);
+      if (data.reports) setReportList(data.reports);
+      if (data.emergencyContacts) setEmergencyContacts(data.emergencyContacts);
+      if (data.logbookCategories) setLogbookCategories(data.logbookCategories);
+    });
   };
 
   const handleSaveFirstLoginPassword = (e) => {

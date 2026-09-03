@@ -40,9 +40,15 @@ export async function GET() {
       sheetsUrl: c.sheets_url,
     }))
 
+    // Sensor field password_default agar tidak bocor ke browser publik
+    const safePersonnel = (personnel || []).map(p => {
+      const { password_default, ...rest } = p;
+      return rest;
+    });
+
     return NextResponse.json(
       {
-        personnel: personnel || [],
+        personnel: safePersonnel,
         docs: docs || [],
         announcements: announcements || [],
         reports: reports || [],

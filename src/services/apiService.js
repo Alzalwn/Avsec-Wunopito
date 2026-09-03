@@ -1,5 +1,20 @@
 // API Service for Supabase Integration via Next.js API Routes
 
+export async function login(username, password) {
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+      cache: 'no-store'
+    });
+    return await res.json();
+  } catch (err) {
+    console.error('Login error:', err);
+    return { success: false, error: 'Koneksi ke server gagal.' };
+  }
+}
+
 export async function fetchPortalData() {
   try {
     const [resData, resPersonnel] = await Promise.all([

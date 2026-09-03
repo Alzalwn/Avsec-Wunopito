@@ -14,7 +14,11 @@ export async function GET() {
   const supabase = getSupabase()
   const { data, error } = await supabase.from('personnel').select('*').order('created_at', { ascending: true })
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ personnel: data })
+  const safeData = (data || []).map(p => {
+    const { password_default, ...rest } = p;
+    return rest;
+  });
+  return NextResponse.json({ personnel: safeData })
 }
 
 export async function POST(request) {
@@ -41,9 +45,13 @@ export async function POST(request) {
       result = data
     }
 
-    // Return full updated list
+    // Return full updated list without passwords
     const { data: all } = await supabase.from('personnel').select('*').order('created_at', { ascending: true })
-    return NextResponse.json({ success: true, personnel: all })
+    const safeAll = (all || []).map(p => {
+      const { password_default, ...rest } = p;
+      return rest;
+    });
+    return NextResponse.json({ success: true, personnel: safeAll })
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
@@ -56,7 +64,11 @@ export async function DELETE(request) {
     const { error } = await supabase.from('personnel').delete().eq('id', id)
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     const { data: all } = await supabase.from('personnel').select('*').order('created_at', { ascending: true })
-    return NextResponse.json({ success: true, personnel: all })
+    const safeAll = (all || []).map(p => {
+      const { password_default, ...rest } = p;
+      return rest;
+    });
+    return NextResponse.json({ success: true, personnel: safeAll })
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }

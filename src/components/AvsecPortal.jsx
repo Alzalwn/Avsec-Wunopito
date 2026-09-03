@@ -190,37 +190,11 @@ export default function AvsecPortal() {
     setIsLoggingIn(true);
 
     try {
-      // Selalu ambil data personel terbaru dari Supabase saat verifikasi login
-      let currentPersonnel = personnelList;
-      try {
-        const res = await fetch('/api/personnel', { cache: 'no-store' });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.personnel && Array.isArray(data.personnel)) {
-            currentPersonnel = data.personnel;
-            setPersonnelList(data.personnel);
-          }
-        }
-      } catch (fetchErr) {
-        console.warn('Gagal fetch live personnel, menggunakan state lokal:', fetchErr);
-      }
+      // Verifikasi login secara aman langsung di sisi server (password tidak dikirim ke browser)
+      const res = await apiService.login(username, password);
 
-      // Cari personel berdasarkan username atau ID Pas, lalu verifikasi password
-      const person = currentPersonnel.find(
-        p =>
-          (p.username?.toLowerCase() === username.toLowerCase() ||
-            p.id_pas?.toLowerCase() === username.toLowerCase()) &&
-          p.password_default === password
-      );
-
-      if (person) {
-        const matchedUser = {
-          id: person.id,
-          username: person.username,
-          nama_lengkap: person.nama,
-          role: person.role || 'USER',
-          is_first_login: person.is_first_login ?? true
-        };
+      if (res.success && res.user) {
+        const matchedUser = res.user;
 
         if (rememberMe) {
           localStorage.setItem('avsec_remembered_username', username);
@@ -247,7 +221,7 @@ export default function AvsecPortal() {
         }
         changeTabWithLoading('dashboard');
       } else {
-        setLoginError('Kredensial tidak valid. Periksa kembali ID Pas / Username dan Password Anda.');
+        setLoginError(res.error || 'Kredensial tidak valid. Periksa kembali ID Pas / Username dan Password Anda.');
       }
     } catch (err) {
       setLoginError('Terjadi kesalahan saat memverifikasi login.');

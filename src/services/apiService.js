@@ -2,11 +2,24 @@
 
 export async function fetchPortalData() {
   try {
-    const res = await fetch(`/api/data?_t=${Date.now()}`, { cache: 'no-store' });
-    if (res.ok) {
-      const data = await res.json();
-      return data;
+    const [resData, resPersonnel] = await Promise.all([
+      fetch(`/api/data?_t=${Date.now()}`, { cache: 'no-store' }),
+      fetch(`/api/personnel?_t=${Date.now()}`, { cache: 'no-store' })
+    ]);
+
+    let data = {};
+    if (resData.ok) {
+      data = await resData.json();
     }
+
+    if (resPersonnel.ok) {
+      const pData = await resPersonnel.json();
+      if (pData.personnel && pData.personnel.length > 0) {
+        data.personnel = pData.personnel;
+      }
+    }
+
+    return data;
   } catch (err) {
     console.error('API Supabase error on fetchPortalData:', err);
   }

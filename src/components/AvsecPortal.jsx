@@ -165,12 +165,12 @@ export default function AvsecPortal() {
 
     apiService.fetchPortalData()
       .then(data => {
-        if (data.personnel) setPersonnelList(data.personnel);
-        if (data.docs) setDocList(data.docs);
-        if (data.announcements) setAnnouncements(data.announcements);
-        if (data.reports) setReportList(data.reports);
-        if (data.emergencyContacts) setEmergencyContacts(data.emergencyContacts);
-        if (data.logbookCategories) setLogbookCategories(data.logbookCategories);
+        if (data.personnel && data.personnel.length > 0) setPersonnelList(data.personnel);
+        if (data.docs && data.docs.length > 0) setDocList(data.docs);
+        if (data.announcements && data.announcements.length > 0) setAnnouncements(data.announcements);
+        if (data.reports && data.reports.length > 0) setReportList(data.reports);
+        if (data.emergencyContacts && data.emergencyContacts.length > 0) setEmergencyContacts(data.emergencyContacts);
+        if (data.logbookCategories && data.logbookCategories.length > 0) setLogbookCategories(data.logbookCategories);
       })
       .catch(err => console.error('Gagal memuat data dari database:', err));
   }, []);
@@ -292,7 +292,7 @@ export default function AvsecPortal() {
     showNotification('Password berhasil diperbarui! Selamat bertugas di Portal AVSEC.');
   };
 
-  const handleSaveAdminSecurity = (e) => {
+  const handleSaveAdminSecurity = async (e) => {
     e.preventDefault();
     if (adminSecurityForm.newUsername && personnelList.some(p => p.username.toLowerCase() === adminSecurityForm.newUsername.toLowerCase() && p.username !== currentUser.username)) {
       alert('Username tersebut sudah digunakan oleh akun lain!');
@@ -310,9 +310,31 @@ export default function AvsecPortal() {
       }
     }
 
-    const updatedName = adminSecurityForm.newUsername || currentUser.username;
-    setCurrentUser({ ...currentUser, username: updatedName });
-    showNotification('Kredensial berhasil diperbarui.');
+    const updatedUsername = adminSecurityForm.newUsername || currentUser.username;
+    const targetPerson = personnelList.find(p => p.id === currentUser.id || p.username === currentUser.username);
+
+    if (targetPerson) {
+      const payload = {
+        ...targetPerson,
+        username: updatedUsername,
+        password_default: adminSecurityForm.newPass || targetPerson.password_default
+      };
+
+      try {
+        const res = await apiService.savePersonnel(payload);
+        if (res.personnel) {
+          setPersonnelList(res.personnel);
+        }
+      } catch (err) {
+        console.error('Gagal menyimpan kredensial ke Supabase:', err);
+      }
+    }
+
+    const updatedUser = { ...currentUser, username: updatedUsername };
+    setCurrentUser(updatedUser);
+    localStorage.setItem('avsec_current_user', JSON.stringify(updatedUser));
+
+    showNotification('Kredensial berhasil diperbarui dan disimpan permanen ke database.');
     setAdminSecurityForm({ newUsername: '', currentPass: '', newPass: '', confirmPass: '' });
   };
 

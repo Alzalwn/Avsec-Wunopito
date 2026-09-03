@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
+import { initialDocs } from '../../../src/utils/helpers.js'
+
 export const dynamic = 'force-dynamic'
 
 function getSupabase() {
@@ -11,10 +13,22 @@ function getSupabase() {
 }
 
 export async function GET() {
-  const supabase = getSupabase()
-  const { data, error } = await supabase.from('docs').select('*').order('created_at', { ascending: true })
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ docs: data })
+  try {
+    const supabase = getSupabase()
+    let { data, error } = await supabase.from('docs').select('*').order('created_at', { ascending: true })
+    
+    // Auto-seed data awal jika tabel docs di Supabase masih kosong
+    if (!error && (!data || data.length === 0)) {
+      await supabase.from('docs').insert(initialDocs)
+      const res = await supabase.from('docs').select('*').order('created_at', { ascending: true })
+      data = res.data
+    }
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ docs: data || [] })
+  } catch (err) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
 }
 
 export async function POST(request) {

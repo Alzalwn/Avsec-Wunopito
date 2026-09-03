@@ -92,6 +92,8 @@ export default function AvsecPortal() {
 
   // Entity Modal States & Forms
   const [isPersonnelModalOpen, setIsPersonnelModalOpen] = useState(false);
+  const [isPersonnelReadOnly, setIsPersonnelReadOnly] = useState(false);
+  const [isPersonnelSelfEdit, setIsPersonnelSelfEdit] = useState(false);
   const [editingPersonnel, setEditingPersonnel] = useState(null);
   const [personnelForm, setPersonnelForm] = useState({
     nama: '',
@@ -341,6 +343,8 @@ export default function AvsecPortal() {
   // CRUD Handlers for Personnel
   const openAddPersonnelModal = () => {
     setEditingPersonnel(null);
+    setIsPersonnelReadOnly(false);
+    setIsPersonnelSelfEdit(false);
     setPersonnelForm({
       nama: '',
       id_pas: `AV-0${Math.floor(10 + Math.random() * 90)}`,
@@ -356,8 +360,18 @@ export default function AvsecPortal() {
     setIsPersonnelModalOpen(true);
   };
 
-  const openEditPersonnelModal = (person) => {
+  const openEditPersonnelModal = (person, isSelf = false) => {
     setEditingPersonnel(person);
+    setIsPersonnelReadOnly(false);
+    setIsPersonnelSelfEdit(isSelf);
+    setPersonnelForm({ ...person, role: person.role || 'USER', password_default: person.password_default || 'wunopito123' });
+    setIsPersonnelModalOpen(true);
+  };
+
+  const openViewPersonnelDetail = (person) => {
+    setEditingPersonnel(person);
+    setIsPersonnelReadOnly(true);
+    setIsPersonnelSelfEdit(false);
     setPersonnelForm({ ...person, role: person.role || 'USER', password_default: person.password_default || 'wunopito123' });
     setIsPersonnelModalOpen(true);
   };
@@ -386,6 +400,13 @@ export default function AvsecPortal() {
         if (data.personnel) {
           setPersonnelList(data.personnel);
           showNotification(editingPersonnel ? `Data personel ${personnelForm.nama} berhasil diperbarui di database.` : `Personel baru ${personnelForm.nama} berhasil didaftarkan ke database.`);
+          
+          // Jika mengedit data diri sendiri, sinkronkan sesi login saat ini
+          if (currentUser && (currentUser.id === personPayload.id || currentUser.username === personPayload.username || currentUser.id_pas === personPayload.id_pas)) {
+            const updatedSelf = { ...currentUser, nama: personPayload.nama, kontak: personPayload.kontak, password_default: personPayload.password_default };
+            setCurrentUser(updatedSelf);
+            localStorage.setItem('avsec_current_user', JSON.stringify(updatedSelf));
+          }
         }
       })
       .catch(err => console.error('Error saving personnel:', err));
@@ -879,6 +900,7 @@ export default function AvsecPortal() {
                   setAdminSubTab={setAdminSubTab}
                   openAddPersonnelModal={openAddPersonnelModal}
                   openEditPersonnelModal={openEditPersonnelModal}
+                  openViewPersonnelDetail={openViewPersonnelDetail}
                   showNotification={showNotification}
                 />
               )}
@@ -904,6 +926,9 @@ export default function AvsecPortal() {
                   openAddContactModal={openAddContactModal}
                   openEditContactModal={openEditContactModal}
                   handleDeleteContact={handleDeleteContact}
+                  handleSaveLogbookCategory={handleSaveLogbookCategory}
+                  handleDeleteLogbookCategory={handleDeleteLogbookCategory}
+                  setIsAddLogbookModalOpen={setIsAddLogbookModalOpen}
                   openAddDocModal={openAddDocModal}
                   openEditDocModal={openEditDocModal}
                   handleDeleteDoc={handleDeleteDoc}
@@ -911,8 +936,6 @@ export default function AvsecPortal() {
                   adminSecurityForm={adminSecurityForm}
                   setAdminSecurityForm={setAdminSecurityForm}
                   handleSaveAdminSecurity={handleSaveAdminSecurity}
-                  setIsAddLogbookModalOpen={setIsAddLogbookModalOpen}
-                  handleDeleteLogbookCategory={handleDeleteLogbookCategory}
                 />
               )}
             </>
@@ -953,6 +976,8 @@ export default function AvsecPortal() {
         setPersonnelForm={setPersonnelForm}
         generateRandomPassword={generateRandomPassword}
         handleSavePersonnel={handleSavePersonnel}
+        isReadOnly={isPersonnelReadOnly}
+        isSelfEdit={isPersonnelSelfEdit}
       />
 
       <DocumentModal

@@ -926,7 +926,6 @@ export default function AvsecPortal() {
                   openAddContactModal={openAddContactModal}
                   openEditContactModal={openEditContactModal}
                   handleDeleteContact={handleDeleteContact}
-                  handleSaveLogbookCategory={handleSaveLogbookCategory}
                   handleDeleteLogbookCategory={handleDeleteLogbookCategory}
                   setIsAddLogbookModalOpen={setIsAddLogbookModalOpen}
                   openAddDocModal={openAddDocModal}

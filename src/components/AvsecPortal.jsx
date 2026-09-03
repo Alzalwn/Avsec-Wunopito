@@ -209,7 +209,7 @@ export default function AvsecPortal() {
       const person = currentPersonnel.find(
         p =>
           (p.username?.toLowerCase() === username.toLowerCase() ||
-           p.id_pas?.toLowerCase() === username.toLowerCase()) &&
+            p.id_pas?.toLowerCase() === username.toLowerCase()) &&
           p.password_default === password
       );
 
@@ -400,7 +400,7 @@ export default function AvsecPortal() {
         if (data.personnel) {
           setPersonnelList(data.personnel);
           showNotification(editingPersonnel ? `Data personel ${personnelForm.nama} berhasil diperbarui di database.` : `Personel baru ${personnelForm.nama} berhasil didaftarkan ke database.`);
-          
+
           // Jika mengedit data diri sendiri, sinkronkan sesi login saat ini
           if (currentUser && (currentUser.id === personPayload.id || currentUser.username === personPayload.username || currentUser.id_pas === personPayload.id_pas)) {
             const updatedSelf = { ...currentUser, nama: personPayload.nama, kontak: personPayload.kontak, password_default: personPayload.password_default };
@@ -779,7 +779,7 @@ export default function AvsecPortal() {
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-800">
-      
+
       {/* Toast Notification */}
       <NotificationToast notification={notification} />
 
@@ -794,7 +794,7 @@ export default function AvsecPortal() {
 
       {/* Main Workspace Layout */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1 flex flex-col lg:flex-row gap-8">
-        
+
         {/* Sidebar Menu */}
         <Sidebar
           activeTab={activeTab}

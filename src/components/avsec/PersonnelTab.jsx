@@ -1,6 +1,13 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus, Search, Edit3 } from 'lucide-react';
+
+const LICENSE_WEIGHT = {
+  'Senior': 4,
+  'Junior': 3,
+  'Basic': 2,
+  'Non Lisensi': 1
+};
 
 export default function PersonnelTab({
   personnelList,
@@ -16,10 +23,32 @@ export default function PersonnelTab({
   openViewPersonnelDetail,
   showNotification
 }) {
+  const [personnelSort, setPersonnelSort] = useState('senior_first');
+
   const filteredPersonnel = personnelList.filter(p => {
     const matchesSearch = p.nama.toLowerCase().includes(personnelSearch.toLowerCase()) || p.id_pas.toLowerCase().includes(personnelSearch.toLowerCase()) || p.jabatan.toLowerCase().includes(personnelSearch.toLowerCase());
     const matchesFilter = licenseFilter === 'Semua' || p.status_lisensi === licenseFilter;
     return matchesSearch && matchesFilter;
+  });
+
+  const sortedPersonnel = [...filteredPersonnel].sort((a, b) => {
+    if (personnelSort === 'senior_first') {
+      const diff = (LICENSE_WEIGHT[b.lisensi] || 0) - (LICENSE_WEIGHT[a.lisensi] || 0);
+      if (diff !== 0) return diff;
+      return a.nama.localeCompare(b.nama);
+    }
+    if (personnelSort === 'basic_first') {
+      const diff = (LICENSE_WEIGHT[a.lisensi] || 0) - (LICENSE_WEIGHT[b.lisensi] || 0);
+      if (diff !== 0) return diff;
+      return a.nama.localeCompare(b.nama);
+    }
+    if (personnelSort === 'name_asc') {
+      return a.nama.localeCompare(b.nama);
+    }
+    if (personnelSort === 'name_desc') {
+      return b.nama.localeCompare(a.nama);
+    }
+    return 0;
   });
 
   return (
@@ -39,7 +68,7 @@ export default function PersonnelTab({
         )}
       </header>
 
-      <div className="bg-white p-4 rounded-2xl shadow-xs border border-slate-200/80 flex flex-col sm:flex-row gap-3">
+      <div className="bg-white p-4 rounded-2xl shadow-xs border border-slate-200/80 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
             <Search className="h-4 w-4 text-slate-400" />
@@ -52,6 +81,18 @@ export default function PersonnelTab({
             className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50"
           />
         </div>
+
+        <select
+          value={personnelSort}
+          onChange={(e) => setPersonnelSort(e.target.value)}
+          className="px-3 py-2.5 border border-slate-300 rounded-xl text-xs bg-slate-50 font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-2xs"
+          title="Pilih Urutan Personel"
+        >
+          <option value="senior_first">🎖️ Urutkan: Senior ke Basic</option>
+          <option value="basic_first">🔰 Urutkan: Basic ke Senior</option>
+          <option value="name_asc">🔤 Nama: A ke Z</option>
+          <option value="name_desc">🔤 Nama: Z ke A</option>
+        </select>
 
         <div className="flex gap-1 bg-slate-100 p-1 rounded-xl overflow-x-auto">
           {['Semua', 'Aktif', 'Mendekati Expired', 'Kedaluwarsa'].map((tab) => (
@@ -81,7 +122,7 @@ export default function PersonnelTab({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
-              {filteredPersonnel.map((p) => {
+              {sortedPersonnel.map((p) => {
                 const isSelf = currentUser && (
                   p.id === currentUser?.id ||
                   (currentUser?.username && p.username?.toLowerCase() === currentUser?.username?.toLowerCase()) ||

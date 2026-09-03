@@ -1,5 +1,4 @@
-﻿'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus, Search, FileText, Edit3, ExternalLink } from 'lucide-react';
 
 export default function DocumentsTab({
@@ -14,10 +13,34 @@ export default function DocumentsTab({
   openAddDocModal,
   openEditDocModal
 }) {
+  const [docSort, setDocSort] = useState('year_desc');
+
+  const extractDocYear = (doc) => {
+    const match = (doc.tanggal || doc.versi || doc.nomor || '').match(/\b(20\d{2})\b/);
+    return match ? parseInt(match[1], 10) : 0;
+  };
+
   const filteredDocs = docList.filter(d => {
     const matchesSearch = d.title.toLowerCase().includes(docSearch.toLowerCase()) || d.nomor.toLowerCase().includes(docSearch.toLowerCase());
     const matchesCat = docCategory === 'Semua Kategori' || d.kategori === docCategory;
     return matchesSearch && matchesCat;
+  });
+
+  const sortedDocs = [...filteredDocs].sort((a, b) => {
+    if (docSort === 'year_desc') {
+      const yearDiff = extractDocYear(b) - extractDocYear(a);
+      if (yearDiff !== 0) return yearDiff;
+      return (b.tanggal || '').localeCompare(a.tanggal || '');
+    }
+    if (docSort === 'year_asc') {
+      const yearDiff = extractDocYear(a) - extractDocYear(b);
+      if (yearDiff !== 0) return yearDiff;
+      return (a.tanggal || '').localeCompare(b.tanggal || '');
+    }
+    if (docSort === 'title_asc') {
+      return a.title.localeCompare(b.title);
+    }
+    return 0;
   });
 
   return (
@@ -37,8 +60,8 @@ export default function DocumentsTab({
         )}
       </header>
 
-      {/* Toolbar Filter */}
-      <div className="bg-white p-4 rounded-2xl shadow-xs border border-slate-200/80 flex flex-col sm:flex-row gap-3">
+      {/* Toolbar Filter & Sort */}
+      <div className="bg-white p-4 rounded-2xl shadow-xs border border-slate-200/80 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
             <Search className="h-4 w-4 text-slate-400" />
@@ -52,10 +75,22 @@ export default function DocumentsTab({
           />
         </div>
 
+        {/* Pilihan Urutan Tahun */}
+        <select
+          value={docSort}
+          onChange={(e) => setDocSort(e.target.value)}
+          className="px-3.5 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs bg-slate-50 font-bold text-slate-700 cursor-pointer shadow-2xs"
+          title="Pilih Urutan Dokumen"
+        >
+          <option value="year_desc">📅 Urutkan: Tahun Terbaru</option>
+          <option value="year_asc">📅 Urutkan: Tahun Terlama</option>
+          <option value="title_asc">🔤 Judul: A ke Z</option>
+        </select>
+
         <select
           value={docCategory}
           onChange={(e) => setDocCategory(e.target.value)}
-          className="px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50 font-medium text-slate-700"
+          className="px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs bg-slate-50 font-bold text-slate-700 cursor-pointer"
         >
           <option>Semua Kategori</option>
           <option>Regulasi Dirjen</option>
@@ -78,7 +113,7 @@ export default function DocumentsTab({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
-              {filteredDocs.map((doc) => (
+              {sortedDocs.map((doc) => (
                 <tr key={doc.id} className="hover:bg-slate-50/80 transition-colors group">
                   <td className="p-4">
                     <div className="flex items-start gap-3">

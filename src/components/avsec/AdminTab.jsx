@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import React from 'react';
 import {
   Settings,
@@ -17,6 +17,18 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { getPasswordStrength } from '../../utils/helpers.js';
+
+const LICENSE_WEIGHT = {
+  'Senior': 4,
+  'Junior': 3,
+  'Basic': 2,
+  'Non Lisensi': 1
+};
+
+const extractDocYear = (doc) => {
+  const match = (doc.tanggal || doc.versi || doc.nomor || '').match(/\b(20\d{2})\b/);
+  return match ? parseInt(match[1], 10) : 0;
+};
 
 export default function AdminTab({
   personnelList,
@@ -48,6 +60,18 @@ export default function AdminTab({
   setIsAddLogbookModalOpen,
   handleDeleteLogbookCategory
 }) {
+  const sortedPersonnel = [...personnelList].sort((a, b) => {
+    const diff = (LICENSE_WEIGHT[b.lisensi] || 0) - (LICENSE_WEIGHT[a.lisensi] || 0);
+    if (diff !== 0) return diff;
+    return a.nama.localeCompare(b.nama);
+  });
+
+  const sortedDocs = [...docList].sort((a, b) => {
+    const yearDiff = extractDocYear(b) - extractDocYear(a);
+    if (yearDiff !== 0) return yearDiff;
+    return (b.tanggal || '').localeCompare(a.tanggal || '');
+  });
+
   return (
     <div className="space-y-8">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
@@ -151,7 +175,7 @@ export default function AdminTab({
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700">
-                      {personnelList.map((p) => (
+                      {sortedPersonnel.map((p) => (
                         <tr key={p.id} className="hover:bg-blue-50/40 transition-colors">
                           <td className="px-5 py-4">
                             <p className="font-bold text-slate-900 text-sm">{p.nama}</p>
@@ -454,7 +478,7 @@ export default function AdminTab({
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700">
-                      {docList.map((doc) => (
+                      {sortedDocs.map((doc) => (
                         <tr key={doc.id} className="hover:bg-indigo-50/40 transition-colors">
                           <td className="px-5 py-4 font-bold text-slate-900 max-w-xs truncate" title={doc.title}>{doc.title}</td>
                           <td className="px-5 py-4 font-mono text-slate-600 font-semibold">{doc.nomor}</td>

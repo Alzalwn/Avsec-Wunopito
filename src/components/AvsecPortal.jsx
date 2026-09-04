@@ -650,21 +650,6 @@ export default function AvsecPortal() {
     setIsEditReportModalOpen(false);
   };
 
-  const handleCreateReport = async (reportData) => {
-    try {
-      const data = await apiService.saveReport(reportData);
-      if (data && data.reports) {
-        setReportList(data.reports);
-        showNotification('Laporan logbook baru berhasil disimpan dan masuk ke Rekap Log!');
-        return { success: true };
-      }
-    } catch (err) {
-      console.error('Error creating report:', err);
-      showNotification('Gagal menyimpan laporan ke database.');
-    }
-    return { success: false };
-  };
-
   const requestDeleteReport = (id) => {
     setPendingDeleteAction({ type: 'single', id });
     setAdminPasswordInput('');
@@ -843,7 +828,6 @@ export default function AvsecPortal() {
                   toggleSelectReport={toggleSelectReport}
                   openEditReportModal={openEditReportModal}
                   requestDeleteReport={requestDeleteReport}
-                  handleCreateReport={handleCreateReport}
                 />
               )}
 

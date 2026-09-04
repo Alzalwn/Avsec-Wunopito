@@ -24,9 +24,11 @@ export const initialAnnouncements = [
 ];
 
 export const initialReports = [
-  { id: 'RPT-101', tipe: 'Log Patroli Harian', lokasi: 'Perimeter Sisi Udara (Pagar Selatan)', waktu: '08:30 WITA', pelapor: 'Ahmad Dahlan', status: 'Selesai', ringkasan: 'Kondisi pagar perimeter aman, tidak ditemukan celah atau kerusakan.' },
-  { id: 'RPT-102', tipe: 'Pemeriksaan Kendaraan', lokasi: 'Main Gate Access Airside', waktu: '10:15 WITA', pelapor: 'Yohanes Lera', status: 'Selesai', ringkasan: 'Pemeriksaan 1 unit truk catering, izin PAS dan bagasi terverifikasi lengkap.' },
-  { id: 'RPT-103', tipe: 'Penemuan Barang Terlarang', lokasi: 'SCP 2 (Screening Penumpang)', waktu: '11:45 WITA', pelapor: 'Siti Aminah', status: 'Ditangani', ringkasan: 'Penyitaan 1 buah powerbank over-capacity (30.000 mAh non-standar), diserahkan ke customer care.' }
+  { id: 'RPT-101', tipe: 'Log Patroli Harian', lokasi: 'Perimeter Sisi Udara (Pagar Selatan)', waktu: '08:30 WITA', tanggal: '2026-09-04', created_at: '2026-09-04T08:30:00Z', pelapor: 'Ahmad Dahlan', status: 'Selesai', ringkasan: 'Kondisi pagar perimeter aman, tidak ditemukan celah atau kerusakan.' },
+  { id: 'RPT-102', tipe: 'Pemeriksaan Kendaraan', lokasi: 'Main Gate Access Airside', waktu: '10:15 WITA', tanggal: '2026-09-03', created_at: '2026-09-03T10:15:00Z', pelapor: 'Yohanes Lera', status: 'Selesai', ringkasan: 'Pemeriksaan 1 unit truk catering, izin PAS dan bagasi terverifikasi lengkap.' },
+  { id: 'RPT-103', tipe: 'Penemuan Barang Terlarang', lokasi: 'SCP 2 (Screening Penumpang)', waktu: '11:45 WITA', tanggal: '2026-08-28', created_at: '2026-08-28T11:45:00Z', pelapor: 'Siti Aminah', status: 'Ditangani', ringkasan: 'Penyitaan 1 buah powerbank over-capacity (30.000 mAh non-standar), diserahkan ke customer care.' },
+  { id: 'RPT-104', tipe: 'Log Patroli Harian', lokasi: 'Perimeter Runway 07 & 25', waktu: '14:20 WITA', tanggal: '2026-08-15', created_at: '2026-08-15T14:20:00Z', pelapor: 'Budi Santoso', status: 'Selesai', ringkasan: 'Pengecekan marka runway dan pagar batas timur, situasi aman dan kondusif.' },
+  { id: 'RPT-105', tipe: 'Log Access Control', lokasi: 'Pintu Masuk Karyawan', waktu: '07:10 WITA', tanggal: '2026-07-22', created_at: '2026-07-22T07:10:00Z', pelapor: 'Maria Fernandez', status: 'Selesai', ringkasan: 'Verifikasi identitas PAS Bandara 45 personel ground handling pagi hari.' }
 ];
 
 export const initialEmergencyContacts = [

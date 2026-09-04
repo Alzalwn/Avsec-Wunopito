@@ -58,7 +58,9 @@ export default function AdminTab({
   setAdminSecurityForm,
   handleSaveAdminSecurity,
   setIsAddLogbookModalOpen,
-  handleDeleteLogbookCategory
+  handleDeleteLogbookCategory,
+  openAddLogbookModal,
+  openEditLogbookModal
 }) {
   const sortedPersonnel = [...personnelList].sort((a, b) => {
     const diff = (LICENSE_WEIGHT[b.lisensi] || 0) - (LICENSE_WEIGHT[a.lisensi] || 0);
@@ -680,7 +682,7 @@ export default function AdminTab({
                   <p className="text-xs text-slate-500 mt-0.5">Penambahan atau penghapusan pada modul ini akan langsung berdampak ke menu Pelaporan & Log.</p>
                 </div>
                 <button
-                  onClick={() => setIsAddLogbookModalOpen(true)}
+                  onClick={openAddLogbookModal || (() => setIsAddLogbookModalOpen(true))}
                   className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4" /> + Tambah Jenis Logbook Baru
@@ -696,23 +698,34 @@ export default function AdminTab({
                         <span className="text-[10px] font-mono bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded-md">ID: {cat.id}</span>
                       </div>
                       <p className="text-xs text-slate-500 font-mono truncate" title={cat.url}>Embed: {cat.url}</p>
-                      <p className="text-xs text-slate-500 font-mono truncate mt-0.5" title={cat.sheetsUrl}>Sheets: {cat.sheetsUrl}</p>
+                      <p className="text-xs text-purple-700 font-mono truncate mt-0.5 bg-purple-50/70 p-1.5 rounded-lg border border-purple-100" title={cat.sheetsUrl}>
+                        <strong>Sheets URL:</strong> {cat.sheetsUrl || '(Belum diatur)'}
+                      </p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                      <a
-                        href={cat.nativeUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
-                      >
-                        Test Form <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => openEditLogbookModal && openEditLogbookModal(cat)}
+                          className="flex items-center gap-1.5 text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-600 hover:text-white px-3 py-1.5 rounded-lg transition-colors cursor-pointer border border-purple-200"
+                          title="Ubah judul, link Google Sheets, atau link Google Form"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" /> Ubah Link (Sheets / Form)
+                        </button>
+                        <a
+                          href={cat.nativeUrl || cat.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                        >
+                          Test Form <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
                       <button
                         onClick={() => handleDeleteLogbookCategory(cat.id, cat.title)}
                         className="flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg transition-colors cursor-pointer border border-red-200"
                       >
-                        <Trash2 className="w-3.5 h-3.5" /> Hapus Jenis Logbook
+                        <Trash2 className="w-3.5 h-3.5" /> Hapus
                       </button>
                     </div>
                   </div>

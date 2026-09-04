@@ -35,7 +35,8 @@ export default function LogbookTab({
   toggleSelectAllReports,
   toggleSelectReport,
   openEditReportModal,
-  requestDeleteReport
+  requestDeleteReport,
+  openEditLogbookModal
 }) {
   const [showCookieHelp, setShowCookieHelp] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
@@ -263,6 +264,16 @@ export default function LogbookTab({
               >
                 Buka Google Sheets Full <ExternalLink className="w-3.5 h-3.5" />
               </a>
+              {currentUser?.role === 'ADMIN' && openEditLogbookModal && (
+                <button
+                  type="button"
+                  onClick={() => openEditLogbookModal(currentFormObj)}
+                  className="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-xs transition-all cursor-pointer"
+                  title="Ubah atau tempel link Google Sheets untuk logbook ini"
+                >
+                  <Edit3 className="w-3.5 h-3.5" /> Tempel / Ubah Link Sheets
+                </button>
+              )}
             </div>
           </div>
 

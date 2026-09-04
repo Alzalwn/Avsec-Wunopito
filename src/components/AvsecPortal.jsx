@@ -139,7 +139,7 @@ export default function AvsecPortal() {
   const [contactForm, setContactForm] = useState({ nama: '', kontak: '', status: '24 Jam Aktif' });
 
   const [isAddLogbookModalOpen, setIsAddLogbookModalOpen] = useState(false);
-  const [logbookForm, setLogbookForm] = useState({ title: '', url: '', nativeUrl: '', sheetsUrl: '' });
+  const [logbookForm, setLogbookForm] = useState({ id: '', title: '', url: '', nativeUrl: '', sheetsUrl: '' });
 
   // Toast Notification
   const [notification, setNotification] = useState('');
@@ -578,26 +578,48 @@ export default function AvsecPortal() {
   const handleSaveNewLogbook = (e) => {
     e.preventDefault();
     if (!logbookForm.title.trim() || !logbookForm.url.trim()) return;
-    const newCat = {
+    const isEdit = !!logbookForm.id;
+    const catPayload = {
+      ...(isEdit ? { id: logbookForm.id } : {}),
       title: logbookForm.title.trim().toUpperCase(),
       url: logbookForm.url.trim(),
       nativeUrl: logbookForm.nativeUrl.trim() || logbookForm.url.trim(),
       sheetsUrl: logbookForm.sheetsUrl.trim() || googleSheetsUrl
     };
 
-    apiService.saveLogbookCategory(newCat)
+    apiService.saveLogbookCategory(catPayload)
       .then(data => {
         if (data.logbookCategories) {
           setLogbookCategories(data.logbookCategories);
-          const added = data.logbookCategories[data.logbookCategories.length - 1];
-          if (added) setSelectedFormKey(added.id);
-          showNotification(`Jenis Logbook "${newCat.title}" berhasil ditambahkan ke database!`);
+          if (!isEdit) {
+            const added = data.logbookCategories[data.logbookCategories.length - 1];
+            if (added) setSelectedFormKey(added.id);
+          }
+          showNotification(isEdit
+            ? `Tautan & Link Logbook "${catPayload.title}" berhasil diperbarui!`
+            : `Jenis Logbook "${catPayload.title}" berhasil ditambahkan ke database!`);
         }
       })
       .catch(err => console.error('Error saving logbook category:', err));
 
     setIsAddLogbookModalOpen(false);
-    setLogbookForm({ title: '', url: '', nativeUrl: '', sheetsUrl: '' });
+    setLogbookForm({ id: '', title: '', url: '', nativeUrl: '', sheetsUrl: '' });
+  };
+
+  const openAddLogbookModal = () => {
+    setLogbookForm({ id: '', title: '', url: '', nativeUrl: '', sheetsUrl: '' });
+    setIsAddLogbookModalOpen(true);
+  };
+
+  const openEditLogbookModal = (cat) => {
+    setLogbookForm({
+      id: cat.id,
+      title: cat.title,
+      url: cat.url,
+      nativeUrl: cat.nativeUrl || cat.url,
+      sheetsUrl: cat.sheetsUrl || ''
+    });
+    setIsAddLogbookModalOpen(true);
   };
 
   const handleDeleteLogbookCategory = (catId, catTitle) => {
@@ -828,6 +850,7 @@ export default function AvsecPortal() {
                   toggleSelectReport={toggleSelectReport}
                   openEditReportModal={openEditReportModal}
                   requestDeleteReport={requestDeleteReport}
+                  openEditLogbookModal={openEditLogbookModal}
                 />
               )}
 
@@ -902,6 +925,8 @@ export default function AvsecPortal() {
                   handleDeleteContact={handleDeleteContact}
                   handleDeleteLogbookCategory={handleDeleteLogbookCategory}
                   setIsAddLogbookModalOpen={setIsAddLogbookModalOpen}
+                  openAddLogbookModal={openAddLogbookModal}
+                  openEditLogbookModal={openEditLogbookModal}
                   openAddDocModal={openAddDocModal}
                   openEditDocModal={openEditDocModal}
                   handleDeleteDoc={handleDeleteDoc}

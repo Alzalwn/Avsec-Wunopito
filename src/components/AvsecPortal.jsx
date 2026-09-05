@@ -577,30 +577,56 @@ export default function AvsecPortal() {
   // CRUD Handlers for Logbook Categories
   const handleSaveNewLogbook = (e) => {
     e.preventDefault();
-    if (!logbookForm.title.trim() || !logbookForm.url.trim()) return;
+    if (!logbookForm.title.trim()) return;
+
+    let rawUrl = (logbookForm.url || logbookForm.nativeUrl || '').trim();
+    if (!rawUrl) {
+      alert('Mohon masukkan tautan / link Google Form terlebih dahulu!');
+      return;
+    }
+
+    // Auto format docs.google.com/forms agar embed iframe selalu valid (?embedded=true)
+    let embedUrl = rawUrl;
+    let nativeUrl = (logbookForm.nativeUrl || rawUrl).trim();
+    if (rawUrl.includes('docs.google.com/forms')) {
+      const base = rawUrl.split('?')[0];
+      const withView = base.endsWith('/viewform') ? base : `${base}/viewform`;
+      embedUrl = `${withView}?embedded=true`;
+      if (!logbookForm.nativeUrl || logbookForm.nativeUrl === rawUrl) {
+        nativeUrl = `${withView}?usp=header`;
+      }
+    }
+
     const isEdit = !!logbookForm.id;
     const catPayload = {
       ...(isEdit ? { id: logbookForm.id } : {}),
       title: logbookForm.title.trim().toUpperCase(),
-      url: logbookForm.url.trim(),
-      nativeUrl: logbookForm.nativeUrl.trim() || logbookForm.url.trim(),
-      sheetsUrl: logbookForm.sheetsUrl.trim() || googleSheetsUrl
+      url: embedUrl,
+      nativeUrl: nativeUrl,
+      sheetsUrl: (logbookForm.sheetsUrl || '').trim() || googleSheetsUrl
     };
+
+    // Optimistic Update: Langsung perbarui state di layar seketika
+    if (isEdit) {
+      setLogbookCategories(prev => prev.map(c => c.id === logbookForm.id ? { ...c, ...catPayload } : c));
+      showNotification(`Tautan & Link Logbook "${catPayload.title}" berhasil diperbarui!`);
+    }
 
     apiService.saveLogbookCategory(catPayload)
       .then(data => {
-        if (data.logbookCategories) {
+        if (data && data.logbookCategories) {
           setLogbookCategories(data.logbookCategories);
           if (!isEdit) {
             const added = data.logbookCategories[data.logbookCategories.length - 1];
             if (added) setSelectedFormKey(added.id);
+            showNotification(`Jenis Logbook "${catPayload.title}" berhasil ditambahkan ke database!`);
           }
-          showNotification(isEdit
-            ? `Tautan & Link Logbook "${catPayload.title}" berhasil diperbarui!`
-            : `Jenis Logbook "${catPayload.title}" berhasil ditambahkan ke database!`);
         }
       })
-      .catch(err => console.error('Error saving logbook category:', err));
+      .catch(err => {
+        console.error('Error saving logbook category:', err);
+        showNotification('Perubahan diterapkan lokal. Gagal sinkronisasi ke server.');
+      });
 
     setIsAddLogbookModalOpen(false);
     setLogbookForm({ id: '', title: '', url: '', nativeUrl: '', sheetsUrl: '' });

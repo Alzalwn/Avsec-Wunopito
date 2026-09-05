@@ -141,14 +141,27 @@ export default function LogbookTab({
               </button>
             ))}
 
-            <a
-              href={currentFormObj.nativeUrl || currentFormObj.url}
-              target="_blank"
-              rel="noreferrer"
-              className="ml-auto flex items-center gap-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all"
-            >
-              Buka Form di Tab Baru <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+            <div className="ml-auto flex items-center gap-2">
+              <a
+                href={currentFormObj.nativeUrl || currentFormObj.url}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all"
+              >
+                Buka Form di Tab Baru <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+
+              {currentUser?.role === 'ADMIN' && openEditLogbookModal && (
+                <button
+                  type="button"
+                  onClick={() => openEditLogbookModal(currentFormObj)}
+                  className="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-xs transition-all cursor-pointer"
+                  title="Ubah tautan link Google Form atau Google Sheets untuk logbook ini"
+                >
+                  <Edit3 className="w-3.5 h-3.5" /> Ubah Link Form
+                </button>
+              )}
+            </div>
           </div>
 
           {/* SMART MOBILE & COOKIE ASSISTANCE CARD */}
